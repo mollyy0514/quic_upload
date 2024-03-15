@@ -68,7 +68,7 @@ func HandleQuicStream_ul(stream quic.Stream) {
 	if err != nil {
 		return
 	}
-	fmt.Printf("Received: %s %d bytes\n", filename, filesize)
+	fmt.Printf("Receiving: %s %d bytes\n", filename, filesize)
 
 	buf, err := WriteFile(DESTDIR + filename)
 	if err != nil {
