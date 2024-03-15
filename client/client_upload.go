@@ -29,8 +29,8 @@ var LOGDIR string
 const PACKET_LEN = 250
 
 func main() {
-	_host := flag.String("h", "127.0.0.1", "server ip")
-	_port := flag.Int("p", 4242, "server upload port")
+	_host := flag.String("h", "140.112.20.183", "server ip")
+	_port := flag.Int("p", 4200, "server upload port")
 	_file := flag.String("f", "input.txt", "the file name that we need to transfer")
 	_log := flag.String("l", "./data/", "where to store the log file")
 	flag.Parse()
@@ -56,7 +56,8 @@ func main() {
 				if err != nil {
 					fmt.Println("err: ", err)
 				}
-				defer session_ul.CloseWithError(quic.ApplicationErrorCode(501), "hi you have an error")
+				// defer session_ul.CloseWithError(quic.ApplicationErrorCode(501), "hi you have an error")
+				
 				// create a stream_ul
 				// context.Background() is similar to a channel, giving QUIC a way to communicate
 				stream_ul, err := session_ul.OpenStreamSync(context.Background())
@@ -76,10 +77,9 @@ func main() {
 					log.Fatalf("write stream error: %v\n", err)
 				}
 				fmt.Printf("send %d bytes\n", sendBytes)
+				
 				time.Sleep(time.Second * 1)
-				stream_ul.Close()
 				session_ul.CloseWithError(0, "ul times up")
-				os.Exit(0)
 			}
 		}(i)
 	}

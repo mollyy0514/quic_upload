@@ -34,7 +34,7 @@ const PACKET_LEN = 250
 // then connect with a client, send the message, and wait for its receipt.
 func main() {
 	_host := flag.String("h", "0.0.0.0", "host")
-	_port := flag.Int("p", 4242, "server upload port")
+	_port := flag.Int("p", 4200, "server upload port")
 	_dest := flag.String("d", "/Users/molly/Desktop/", "where to put the received files")
 	_log := flag.String("l", "./data/", "where to store the log file")
 	flag.Parse()
