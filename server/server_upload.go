@@ -78,7 +78,7 @@ func HandleQuicStream_ul(stream quic.Stream) {
 	recvByte, err := io.Copy(buf, stream)
 	buf.Flush()
 	if err != nil {
-		log.Printf("write file error: %v\n", err)
+		log.Printf("write file: %v\n", err)
 	}
 	log.Printf("recv %d bytes\n", recvByte)
 

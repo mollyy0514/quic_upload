@@ -74,7 +74,7 @@ func main() {
 				// }
 				sendBytes, err := io.Copy(stream_ul, data)
 				if err != nil {
-					log.Fatalf("write stream error: %v\n", err)
+					log.Printf("write stream: %v\n", err)
 				}
 				fmt.Printf("send %d bytes\n", sendBytes)
 				
