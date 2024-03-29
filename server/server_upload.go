@@ -19,15 +19,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/logging"
-	"github.com/quic-go/quic-go/qlog"
+	"github.com/mollyy0514/quic-go"
+	"github.com/mollyy0514/quic-go/logging"
+	"github.com/mollyy0514/quic-go/qlog"
 )
 
 var SERVER string
 var PORT_UL int
 var DESTDIR string
 var LOGDIR string
+
 const PACKET_LEN = 250
 
 // We start a server echoing data on the first stream the client opens,
@@ -36,7 +37,7 @@ func main() {
 	_host := flag.String("h", "0.0.0.0", "host")
 	_port := flag.Int("p", 4200, "server upload port")
 	_dest := flag.String("d", "/Users/molly/Desktop/", "where to put the received files")
-	_log := flag.String("l", "./data/", "where to store the log file")
+	_log := flag.String("ld", "./data/", "where to store the log file")
 	flag.Parse()
 	SERVER = *_host
 	DESTDIR = *_dest
@@ -44,12 +45,12 @@ func main() {
 	LOGDIR = *_log
 
 	// Check if the directory already exists
-    if _, err := os.Stat(DESTDIR); os.IsNotExist(err) {
-        // Create the directory and its parent directories if they do not exist
-        if err := os.MkdirAll(DESTDIR, 0755); err != nil {
-            print("Directory create error: %v", err)
-        }
-    }
+	if _, err := os.Stat(DESTDIR); os.IsNotExist(err) {
+		// Create the directory and its parent directories if they do not exist
+		if err := os.MkdirAll(DESTDIR, 0755); err != nil {
+			print("Directory create error: %v", err)
+		}
+	}
 
 	fmt.Println("Starting server...")
 
@@ -163,10 +164,10 @@ func GenerateTLSConfig(nowTime time.Time, port int) *tls.Config {
 	keyPEM := pem.EncodeToMemory(&pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(key)})
 	certPEM := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certDER})
 
-	// nowHour := nowTime.Hour()
-	// nowMinute := nowTime.Minute()
-	// keyFilePath := fmt.Sprintf("../data/tls_key_%02d%02d_%02d.log", nowHour, nowMinute, port)
-	// kl, _ := os.OpenFile(keyFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+	nowHour := nowTime.Hour()
+	nowMinute := nowTime.Minute()
+	keyFilePath := fmt.Sprintf("%stls_key_%02d%02d_%02d.log", LOGDIR, nowHour, nowMinute, port)
+	kl, _ := os.OpenFile(keyFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 
 	tlsCert, err := tls.X509KeyPair(certPEM, keyPEM)
 	if err != nil {
@@ -175,11 +176,11 @@ func GenerateTLSConfig(nowTime time.Time, port int) *tls.Config {
 	return &tls.Config{
 		Certificates: []tls.Certificate{tlsCert},
 		NextProtos:   []string{"h3"},
-		// KeyLogWriter: kl,
+		KeyLogWriter: kl,
 	}
 }
 
-func Server_receive_dir(stream quic.Stream, buf []byte) (string) {
+func Server_receive_dir(stream quic.Stream, buf []byte) string {
 	n, err := stream.Read(buf)
 	if err != nil {
 		fmt.Println(err)
