@@ -8,7 +8,7 @@ Parameters:
 - `-h`: host  
 - `-p`: port  
 - `-d`: path to store receiving files  
-- `-l`: path to store log files  
+- `-ld`: path to store log files  
 
 ### Client
 ```
@@ -18,4 +18,5 @@ Parameters:
 - `-h`: host  
 - `-p`: port  
 - `-f`: transfering file  
-- `-l`: path to store log files  
+- `i`: interface to bind
+- `-ld`: path to store log files  
