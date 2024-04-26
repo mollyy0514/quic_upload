@@ -63,28 +63,30 @@ func main() {
 	wg.Wait()
 }
 
-func HandleQuicStream_ul(stream quic.Stream) {
+func HandleQuicStreamUl(stream quic.Stream) {
 	fileNameBuf := make([]byte, PACKET_LEN)
-	filename, filesize, err := Server_receive_file(stream, fileNameBuf)
+	filename, filesize, err := ServerReceiveFile(stream, fileNameBuf)
 	if err != nil {
 		return
 	}
-	fmt.Printf("Receiving: %s %d bytes\n", filename, filesize)
+	fmt.Printf("Receiving: %s %d bytes.\n", filename, filesize)
 
 	buf, err := WriteFile(DESTDIR + filename)
 	if err != nil {
-		log.Printf("open file error: %v\n", err)
-		// continue
+		log.Printf("Open file error: %v\n", err)
 	}
 	recvByte, err := io.Copy(buf, stream)
 	buf.Flush()
 	if err != nil {
-		log.Printf("write file: %v\n", err)
+		log.Printf("%v\n", err)
 	}
-	log.Printf("recv %d bytes\n", recvByte)
+	log.Printf("Received %d bytes.\n", recvByte)
 
 	if filesize != recvByte {
 		log.Printf("size error occur: want %d, received %d \n", filesize, recvByte)
+		os.Exit(1)
+	} else {
+		os.Exit(0)
 	}
 }
 
@@ -97,7 +99,7 @@ func HandleQuicSession(sess quic.Connection) {
 			return // Using panic here will terminate the program if a new connection has not come in in a while, such as transmitting large file.
 		}
 
-		go HandleQuicStream_ul(stream)
+		go HandleQuicStreamUl(stream)
 	}
 }
 
@@ -180,7 +182,7 @@ func GenerateTLSConfig(nowTime time.Time, port int) *tls.Config {
 	}
 }
 
-func Server_receive_dir(stream quic.Stream, buf []byte) string {
+func ServerReceiveDir(stream quic.Stream, buf []byte) string {
 	n, err := stream.Read(buf)
 	if err != nil {
 		fmt.Println(err)
@@ -190,7 +192,7 @@ func Server_receive_dir(stream quic.Stream, buf []byte) string {
 	return dirName
 }
 
-func Server_receive_file(stream quic.Stream, buf []byte) (string, int64, error) {
+func ServerReceiveFile(stream quic.Stream, buf []byte) (string, int64, error) {
 	n, err := stream.Read(buf)
 	if err != nil {
 		fmt.Println(err)

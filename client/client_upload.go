@@ -93,7 +93,7 @@ func main() {
 				defer stream_ul.Close()
 
 				data, name, size := ReadFile(file)
-				Client_send_file(stream_ul, name, size)
+				ClientSendFile(stream_ul, name, size)
 				fmt.Printf("upload %s with %d bytes\n", name, size)
 				sendBytes, err := io.Copy(stream_ul, data)
 				if err != nil {
@@ -102,6 +102,7 @@ func main() {
 				fmt.Printf("send %d bytes\n", sendBytes)
 				time.Sleep(time.Second * 1)
 				session_ul.CloseWithError(0, "ul times up")
+				os.Exit(0)
 			}
 		}(i)
 	}
@@ -153,7 +154,7 @@ func ReadFile(file string) (*bufio.Reader, string, int64) {
 	return bufio.NewReader(fp), fileInfo.Name(), fileInfo.Size()
 }
 
-func Create_packet(fileName string, fileSize int64) []byte {
+func CreatePacket(fileName string, fileSize int64) []byte {
 	fileSizeStr := strconv.FormatInt(fileSize, 10)
 	sendString := fileName + "@" + fileSizeStr
 	message := []byte(sendString)
@@ -168,10 +169,10 @@ func SendPacket(stream quic.Stream, message []byte) {
 	}
 }
 
-func Client_send_file(stream quic.Stream, name string, size int64) {
+func ClientSendFile(stream quic.Stream, name string, size int64) {
 	t := time.Now().UnixNano() // Time in milliseconds
 	fmt.Println("client sent: ", t)
 
-	message := Create_packet(name, size)
+	message := CreatePacket(name, size)
 	SendPacket(stream, message)
 }
