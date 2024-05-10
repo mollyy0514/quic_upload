@@ -2,12 +2,12 @@ module quic_upload
 
 go 1.22.1
 
-require github.com/mollyy0514/quic-go v0.0.0-20240509064714-1105c07fbb67
+require github.com/mollyy0514/quic-go v0.0.0-20240510035650-6c47e04bc018
 
 require (
 	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
-	github.com/google/pprof v0.0.0-20240508145209-1db217f89380 // indirect
+	github.com/google/pprof v0.0.0-20240509144519-723abb6459b7 // indirect
 	github.com/onsi/ginkgo/v2 v2.17.3 // indirect
 	go.uber.org/mock v0.4.0 // indirect
 	golang.org/x/crypto v0.23.0 // indirect
