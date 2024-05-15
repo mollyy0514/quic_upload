@@ -2,7 +2,7 @@ module quic_upload
 
 go 1.22.1
 
-require github.com/mollyy0514/quic-go v0.0.0-20240510035650-6c47e04bc018
+require github.com/mollyy0514/quic-go v0.0.0-20240515025945-5a2493b81399
 
 require (
 	github.com/francoispqt/gojay v1.2.13 // indirect

@@ -23,3 +23,6 @@ Parameters:
 
 ### qlog Key Modification
 - https://hackmd.io/@KilliMilli/ry36Ne9fR
+
+### Note
+- To get the latest quic-go version: `go get -u github.com/mollyy0514/quic-go`

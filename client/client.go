@@ -74,7 +74,7 @@ package main
 // 				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second) // 3s handshake timeout
 // 				defer cancel()
 // 				// connect to server IP. Session is like the socket of TCP/IP
-// 				sessionUl, err := quic.DialAddr(ctx, serverAddrUl, tlsConfig, &quicConfig, *_bind)
+// 				sessionUl, err := quic.DialAddrIface(ctx, serverAddrUl, tlsConfig, &quicConfig, *_bind)
 // 				if err != nil {
 // 					fmt.Println("err: ", err)
 // 				}
@@ -119,7 +119,7 @@ package main
 // 				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second) // 3s handshake timeout
 // 				defer cancel()
 // 				// connect to server IP. Session is like the socket of TCP/IP
-// 				sessionDl, err := quic.DialAddr(ctx, serverAddrDl, tlsConfig, &quicConfig, *_bind)
+// 				sessionDl, err := quic.DialAddrIface(ctx, serverAddrDl, tlsConfig, &quicConfig, *_bind)
 // 				if err != nil {
 // 					fmt.Println("err: ", err)
 // 				}
